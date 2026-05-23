@@ -20,3 +20,13 @@
 ---
 
 ## Bibliografia
+
+---
+
+## Entregas
+
+| Semana | Data | Descrição |
+|------|--------|-----------|
+| 11 | 20/05/2026 | Lab05 - Postagem da Equipe |
+| 13 | 03/06/2026 | Lab06 - Relatório de Acompanhamento |
+| Exames | 03/07/2026 | Entrega do Projeto |
