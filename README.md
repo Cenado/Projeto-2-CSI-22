@@ -8,7 +8,7 @@
 ## Membros
 | Nome | E-mail |
 |------|--------|
-| Arthur de Sousa Vianna | |
+| Arthur de Sousa Vianna | arthur.vianna.9162@ga.ita.br |
 | Danilo Carlos da Silva | danilo.silva.9039@ga.ita.br |
 | João Victor Canedo Paranhos | joao.paranhos.9081@ga.ita.br |
 | Matheus Lima Reis | matheus.reis.9169@ga.ita.br |
