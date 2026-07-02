@@ -22,12 +22,19 @@ class Player(Entity):
         self.x += dx
 
 class Hazard(Entity):
-    def __init__(self, img, x, y):
-        image = pygame.image.load(img)
-        image.convert()
-        image = pygame.transform.scale(image, (130, 130))
-
+    def __init__(self, image_path, x, y):
+        image = self.load_image(image_path)
         super().__init__(image, x, y)
 
-    def move(self, dy): #TODO: transferir a lógica de movimentação dos hazards para esta classe
+    def load_image(self, image_path):
+        image = pygame.image.load(image_path)
+        image.convert()
+        return pygame.transform.scale(image, (130, 130))
+
+    def respawn(self, image_path, x, y):
+        self.image = self.load_image(image_path)
+        self.x = x
+        self.y = y
+
+    def move(self, dy):
         self.y += dy

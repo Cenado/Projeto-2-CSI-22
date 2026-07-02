@@ -12,7 +12,7 @@ class Game:
     run = True
     background = None
     player = None
-    hazard_1 = hazard_2 = hazard_3 = hazard_4 = hazard_5 = None
+    hazard = None
     render_text_bateulateral = None
     render_text_perdeu = None
 
@@ -43,6 +43,15 @@ class Game:
         # Mensagens para o jogador
         self.render_text_bateulateral = my_font.render("COLISÃO!", 0,(255, 255, 255))  # ("texto", opaco/transparente 0/1, cor do texto)
         self.render_text_perdeu = my_font.render("GAME OVER!", 0, (255, 0, 0))  # ("texto, opaco/transparente 0/1, cor do texto)
+
+        # Lista de imagens de hazard
+        self.hazard_images = [
+            "Images/nave.png",
+            "Images/satelite.png",
+            "Images/cometa.png",
+            "Images/planeta.png",
+            "Images/ameaca.png"
+        ]
 
     # init()
 
@@ -79,16 +88,6 @@ class Game:
         self.background.draw(self.screen)
     # elements_draw()
 
-    # Desenha Hazard
-    def draw_hazard (self, hzrd, x, y):
-        hazards = [self.hazard_1, self.hazard_2, self.hazard_3, self.hazard_4, self.hazard_5]
-
-        hazard = hazards[hzrd]
-        hazard.x = x
-        hazard.y = y
-        hazard.draw(self.screen)
-    # draw_hazard()
-
     # Define as posições dos objetos para criar o movimento
     def move_background (self, obj_movL_x, obj_movL_y, obj_movR_x, obj_movR_y):
         self.background.move (self.screen, obj_movL_x, obj_movL_y, obj_movR_x,obj_movR_y)
@@ -114,9 +113,6 @@ class Game:
         velocidade_background = 5
         velocidade_hazard = 7
 
-        faixaA_x = 375
-        faixaA_y = 0
-        hzrd = 0
         h_x = random.randrange(125, 660)
         h_y = -500
 
@@ -142,20 +138,8 @@ class Game:
         # Criar o Player
         self.player = Player(x, y)
 
-        # Criar Harzard_1
-        self.hazard_1 = Hazard("Images/nave.png", h_x, h_y)
-
-        # Criar Harzard_2
-        self.hazard_2 = Hazard("Images/satelite.png", h_x, h_y)
-
-        # Criar Harzard_3
-        self.hazard_3 = Hazard("Images/cometa.png", h_x, h_y)
-
-        # Criar Harzard_4
-        self.hazard_4 = Hazard("Images/planeta.png", h_x, h_y)
-
-        # Criar Harzard_5
-        self.hazard_5 = Hazard("Images/ameaca.png", h_x, h_y)
+        # Criar hazard
+        self.hazard = Hazard(self.hazard_images[0], h_x, h_y)
 
         # Inicializamos o relogio e o dt que vai limitar o valor de FPS
         # frames por segundo do jogo
@@ -205,24 +189,25 @@ class Game:
                 self.run = False
 
             # adicionando movimento ao hazard
-            h_y = h_y + velocidade_hazard / 4
-            self.draw_hazard(hzrd, h_x, h_y)
-            h_y = h_y + velocidade_hazard
+            self.hazard.move(velocidade_hazard / 4)
+            self.hazard.draw(self.screen)
+            self.hazard.move(velocidade_hazard)
 
-            # definindo onde hazard vai aparecer, recomeçando a posição do obstaculo e da faixa
-            if h_y > self.height:
-                h_y = 0 - h_height
-                faixaA_y = 0
-                h_x = random.randrange(125, 650 - h_height)
-                hzrd = random.randint(0, 4)
+            # definindo onde hazard vai aparecer, recomeçando a posição do obstaculo
+            if self.hazard.y > self.height:
+                self.hazard.respawn(
+                    self.hazard_images[random.randint(0, 4)],
+                    random.randrange(125, 650 - h_height),
+                    -h_height)
+                
                 # determinando quantos hazard passaram e a pontuação
                 h_passou = h_passou + 1
                 score = h_passou * 10
 
             # restrições para o game over
-            if self.player.y < h_y + h_height:
-                if self.player.x > h_x or self.player.x > h_x - 56:
-                    if self.player.x < h_x + h_width or self.player.x < h_x - 56:
+            if self.player.y < self.hazard.y + h_height:
+                if self.player.x > self.hazard.x - 56:
+                    if self.player.x < self.hazard.x + h_width:
                         self.screen.blit(self.render_text_perdeu, (80, 200))
                         pygame.display.update()
                         time.sleep(3)
