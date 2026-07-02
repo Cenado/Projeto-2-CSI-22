@@ -79,23 +79,14 @@ class Game:
         self.background.draw(self.screen)
     # elements_draw()
 
-    # Desenha o Player
-    def draw_player (self, x, y):
-        self.player.draw (self.screen, x, y)
-    # draw_player()
-
     # Desenha Hazard
     def draw_hazard (self, hzrd, x, y):
-        if hzrd == 0:
-            self.hazard_1.draw(self.screen, x, y)
-        elif hzrd == 1:
-            self.hazard_2.draw(self.screen, x, y)
-        elif hzrd == 2:
-            self.hazard_3.draw(self.screen, x, y)
-        elif hzrd == 3:
-            self.hazard_4.draw(self.screen, x, y)
-        elif hzrd == 4:
-            self.hazard_5.draw(self.screen, x, y)
+        hazards = [self.hazard_1, self.hazard_2, self.hazard_3, self.hazard_4, self.hazard_5]
+
+        hazard = hazards[hzrd]
+        hazard.x = x
+        hazard.y = y
+        hazard.draw(self.screen)
     # draw_hazard()
 
     # Define as posições dos objetos para criar o movimento
@@ -196,17 +187,17 @@ class Game:
                 movR_y -= 640
 
             # Altera a coordenada x do Player de acordo comas mudanças no event_handle() para ele se mover
-            x = x + self.mudar_x
+            self.player.move(self.mudar_x)
 
             # Mostrar Player
-            self.draw_player (x, y)
+            self.player.draw(self.screen)
 
             # Mostrar score
             self.score_card(self.screen, h_passou, score)
 
             # Restrições do movimento do Player
             # Se o Player bate na lateral não é Game Over
-            if x > 760 - 92 or x < 40 + 5:
+            if self.player.x > 760 - 92 or self.player.x < 40 + 5:
                 self.screen.blit(self.render_text_bateulateral, (80, 200))
                 pygame.display.update()  # atualizar a tela
                 time.sleep(3)
@@ -229,9 +220,9 @@ class Game:
                 score = h_passou * 10
 
             # restrições para o game over
-            if y < h_y + h_height:
-                if x > h_x or x > h_x - 56:
-                    if x < h_x + h_width or x < h_x - 56:
+            if self.player.y < h_y + h_height:
+                if self.player.x > h_x or self.player.x > h_x - 56:
+                    if self.player.x < h_x + h_width or self.player.x < h_x - 56:
                         self.screen.blit(self.render_text_perdeu, (80, 200))
                         pygame.display.update()
                         time.sleep(3)

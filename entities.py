@@ -7,8 +7,8 @@ class Entity(ABC):
         self.x = x
         self.y = y
 
-    def draw(self, screen, x, y):
-        screen.blit(self.image, (x, y)) #TODO: substituir por self.x e self.y quando a lógica da movimentação for transferida de Game
+    def draw(self, screen):
+        screen.blit(self.image, (self.x, self.y))
 
 class Player(Entity):
     def __init__(self, x, y):
@@ -18,6 +18,9 @@ class Player(Entity):
 
         super().__init__(image, x, y)
 
+    def move(self, dx):
+        self.x += dx
+
 class Hazard(Entity):
     def __init__(self, img, x, y):
         image = pygame.image.load(img)
@@ -25,3 +28,6 @@ class Hazard(Entity):
         image = pygame.transform.scale(image, (130, 130))
 
         super().__init__(image, x, y)
+
+    def move(self, dy): #TODO: transferir a lógica de movimentação dos hazards para esta classe
+        self.y += dy
