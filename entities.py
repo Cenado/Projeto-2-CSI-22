@@ -1,49 +1,27 @@
 import pygame
+from abc import ABC
 
-class Entity:
-    #TODO: classe abstrata
-    pass
+class Entity(ABC):
+    def __init__(self, image, x, y):
+        self.image = image
+        self.x = x
+        self.y = y
 
-class Player:
-    """
-    Classe Jogador
-    """
-    image = None
-    x = None
-    y = None
+    def draw(self, screen, x, y):
+        screen.blit(self.image, (x, y)) #TODO: substituir por self.x e self.y quando a lógica da movimentação for transferida de Game
 
+class Player(Entity):
     def __init__(self, x, y):
-        player_fig = pygame.image.load("Images/player.png")
-        player_fig.convert()
-        player_fig = pygame.transform.scale(player_fig, (90, 90))
-        self.image = player_fig
-        self.x = x
-        self.y = y
-    # __init__()
+        image = pygame.image.load("Images/player.png")
+        image.convert()
+        image = pygame.transform.scale(image, (90, 90))
 
-    # Desenhar Player
-    def draw (self, screen, x, y):
-        screen.blit(self.image, (x, y))
-    #draw()
-# Player:
+        super().__init__(image, x, y)
 
-class Hazard:
-
-    image = None
-    x = None
-    y = None
-
+class Hazard(Entity):
     def __init__(self, img, x, y):
-        hazard_fig = pygame.image.load(img)
-        hazard_fig.convert()
-        hazard_fig = pygame.transform.scale(hazard_fig, (130, 130))
-        self.image = hazard_fig
-        self.x = x
-        self.y = y
-    # __init__()
+        image = pygame.image.load(img)
+        image.convert()
+        image = pygame.transform.scale(image, (130, 130))
 
-    # Desenhar Hazard
-    def draw (self, screen, x, y):
-        screen.blit(self.image, (x, y))
-    #draw()
-# Hazard:
+        super().__init__(image, x, y)
