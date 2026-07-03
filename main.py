@@ -1,9 +1,8 @@
 from game import Game
-from hud import HUD
 
 def main():
     # Cria o objeto game e chama o loop básico
-    game = Game("resolution", "fullscreen")
+    game = Game()
     game.loop()
 # main()
 

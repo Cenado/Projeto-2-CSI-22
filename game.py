@@ -1,5 +1,4 @@
 import pygame
-import random
 import time
 from hud import HUD
 from background import Background
@@ -18,7 +17,7 @@ class Game:
     render_text_perdeu = None
     last_direction = 0
 
-    def __init__(self, size, fullscreen):
+    def __init__(self):
 
         """
         Função que inicializa o pygame, define a resolução da tela,
