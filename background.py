@@ -22,7 +22,7 @@ class Background:
         margin_right_fig = pygame.transform.scale(margin_right_fig, (60, 600))
         self.margin_right = margin_right_fig
 
-        self.background_speed = 4
+        self.background_speed = 3.75
         self.bgY1 = 0
         self.bgX1 = 0
 
