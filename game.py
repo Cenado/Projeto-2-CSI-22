@@ -101,14 +101,9 @@ class Game:
 
         # variáveis para movimento de Plano de Fundo/Background
         velocidade_background = 5
-        velocidade_hazard = 8.75
 
-        h_x = random.randrange(125, 660)
-        h_y = -500
-
-        # Info Hazard
-        h_width = 130 #55
-        h_height = 130 #120
+        # comprimento da margem
+        margin_width = 60
 
         # movimento da margem esquerda
         movL_x = 0
@@ -121,15 +116,9 @@ class Game:
         # Criar o Plano de fundo
         self.background = Background()
 
-        # Posicao do Player
-        x = (self.width - 56) / 2
-        y = self.height - 125
-
-        # Criar o Player
-        self.player = Player(x, y)
-
-        # Criar hazard
-        self.hazard = Hazard(h_x, h_y)
+        # Criar entidades
+        self.player = Player(self.width, self.height)
+        self.hazard = Hazard(self.width, margin_width)
 
         # Inicializamos o relogio e o dt que vai limitar o valor de FPS
         # frames por segundo do jogo
@@ -179,12 +168,12 @@ class Game:
                 self.run = False
 
             # adicionando movimento ao hazard
-            self.hazard.move(velocidade_hazard)
+            self.hazard.move()
             self.hazard.draw(self.screen)
 
             # definindo onde hazard vai aparecer, recomeçando a posição do obstaculo
             if self.hazard.exited_screen(self.height):
-                self.hazard.respawn(125, 520)
+                self.hazard.respawn(self.width, margin_width)
                 
                 # determinando quantos hazard passaram e a pontuação
                 h_passou = h_passou + 1

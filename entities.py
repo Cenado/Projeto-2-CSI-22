@@ -13,11 +13,15 @@ class Entity(ABC):
 class Player(Entity):
     WIDTH = 90
     HEIGHT = 90
+    DIST_TO_BOTTOM = 125
 
-    def __init__(self, x, y):
+    def __init__(self, screen_width, screen_height):
         image = pygame.image.load("Images/player.png")
         image.convert()
         image = pygame.transform.scale(image, (self.WIDTH, self.HEIGHT))
+
+        x = (screen_width - self.WIDTH) / 2
+        y = screen_height - self.DIST_TO_BOTTOM
 
         super().__init__(image, x, y)
 
@@ -30,8 +34,10 @@ class Player(Entity):
 class Hazard(Entity):
     WIDTH = 130
     HEIGHT = 130
+    Y_SPAWN = -500
+    SPEED = 8.75
 
-    def __init__(self, x, y):
+    def __init__(self, screen_width, margin_width):
         self.images = [
             "Images/nave.png",
             "Images/satelite.png",
@@ -40,6 +46,9 @@ class Hazard(Entity):
             "Images/ameaca.png"]
 
         image = self.load_image(self.images[0])
+        x = random.randrange(margin_width, screen_width - margin_width - self.WIDTH)
+        y = self.Y_SPAWN
+
         super().__init__(image, x, y)
 
     def load_image(self, image_path):
@@ -47,13 +56,13 @@ class Hazard(Entity):
         image.convert()
         return pygame.transform.scale(image, (self.WIDTH, self.HEIGHT))
 
-    def respawn(self, left_limit, right_limit):
+    def respawn(self, screen_width, margin_width):
         self.image = self.load_image(random.choice(self.images))
-        self.hitbox.x = random.randrange(left_limit, right_limit)
+        self.hitbox.x = random.randrange(margin_width, screen_width - margin_width - self.WIDTH)
         self.hitbox.y = -self.hitbox.height
 
-    def move(self, dy):
-        self.hitbox.y += dy
+    def move(self):
+        self.hitbox.y += self.SPEED
 
     def exited_screen(self, screen_height):
         return self.hitbox.y > screen_height
