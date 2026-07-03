@@ -43,16 +43,6 @@ class Game:
         # Mensagens para o jogador
         self.render_text_bateulateral = my_font.render("COLISÃO!", 0,(255, 255, 255))  # ("texto", opaco/transparente 0/1, cor do texto)
         self.render_text_perdeu = my_font.render("GAME OVER!", 0, (255, 0, 0))  # ("texto, opaco/transparente 0/1, cor do texto)
-
-        # Lista de imagens de hazard
-        self.hazard_images = [
-            "Images/nave.png",
-            "Images/satelite.png",
-            "Images/cometa.png",
-            "Images/planeta.png",
-            "Images/ameaca.png"
-        ]
-
     # init()
 
     def handle_events(self):
@@ -139,7 +129,7 @@ class Game:
         self.player = Player(x, y)
 
         # Criar hazard
-        self.hazard = Hazard(self.hazard_images[0], h_x, h_y)
+        self.hazard = Hazard(h_x, h_y)
 
         # Inicializamos o relogio e o dt que vai limitar o valor de FPS
         # frames por segundo do jogo
@@ -194,11 +184,8 @@ class Game:
             self.hazard.move(velocidade_hazard)
 
             # definindo onde hazard vai aparecer, recomeçando a posição do obstaculo
-            if self.hazard.y > self.height:
-                self.hazard.respawn(
-                    self.hazard_images[random.randint(0, 4)],
-                    random.randrange(125, 650 - h_height),
-                    -h_height)
+            if self.hazard.exited_screen(self.height):
+                self.hazard.respawn(125, 650 - h_height, -h_height)
                 
                 # determinando quantos hazard passaram e a pontuação
                 h_passou = h_passou + 1
