@@ -12,10 +12,13 @@ class Entity(ABC):
         screen.blit(self.image, (self.x, self.y))
 
 class Player(Entity):
+    WIDTH = 90
+    HEIGHT = 90
+
     def __init__(self, x, y):
         image = pygame.image.load("Images/player.png")
         image.convert()
-        image = pygame.transform.scale(image, (90, 90))
+        image = pygame.transform.scale(image, (self.WIDTH, self.HEIGHT))
 
         super().__init__(image, x, y)
 
@@ -26,6 +29,9 @@ class Player(Entity):
         return self.x < left_border or self.x > right_border
 
 class Hazard(Entity):
+    WIDTH = 130
+    HEIGHT = 130
+
     def __init__(self, x, y):
         self.images = [
             "Images/nave.png",
@@ -40,15 +46,21 @@ class Hazard(Entity):
     def load_image(self, image_path):
         image = pygame.image.load(image_path)
         image.convert()
-        return pygame.transform.scale(image, (130, 130))
+        return pygame.transform.scale(image, (self.WIDTH, self.HEIGHT))
 
-    def respawn(self, left_limit, right_limit, spawn_y):
+    def respawn(self, left_limit, right_limit):
         self.image = self.load_image(random.choice(self.images))
         self.x = random.randrange(left_limit, right_limit)
-        self.y = spawn_y
+        self.y = -self.HEIGHT
 
     def move(self, dy):
         self.y += dy
 
     def exited_screen(self, screen_height):
         return self.y > screen_height
+    
+    def collided(self, player):
+        return (
+            player.y < self.y + self.HEIGHT and
+            player.x > self.x - 56 and
+            player.x < self.x + self.WIDTH)

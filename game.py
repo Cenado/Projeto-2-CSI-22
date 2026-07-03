@@ -185,20 +185,18 @@ class Game:
 
             # definindo onde hazard vai aparecer, recomeçando a posição do obstaculo
             if self.hazard.exited_screen(self.height):
-                self.hazard.respawn(125, 650 - h_height, -h_height)
+                self.hazard.respawn(125, 520)
                 
                 # determinando quantos hazard passaram e a pontuação
                 h_passou = h_passou + 1
                 score = h_passou * 10
 
             # restrições para o game over
-            if self.player.y < self.hazard.y + h_height:
-                if self.player.x > self.hazard.x - 56:
-                    if self.player.x < self.hazard.x + h_width:
-                        self.screen.blit(self.render_text_perdeu, (80, 200))
-                        pygame.display.update()
-                        time.sleep(3)
-                        self.run = False
+            if self.hazard.collided(self.player):
+                self.screen.blit(self.render_text_perdeu, (80, 200))
+                pygame.display.update()
+                time.sleep(3)
+                self.run = False
 
             # atualizando a tela
             pygame.display.update()
