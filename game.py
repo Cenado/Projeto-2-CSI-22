@@ -71,14 +71,6 @@ class Game:
 
     # handle_events()
 
-    def elements_update(self, dt):
-        self.background.update(dt)
-    # elements_update()
-
-    def elements_draw(self):
-        self.background.draw(self.screen)
-    # elements_draw()
-
     # Desenha o Player
     def draw_player (self, x, y):
         self.player.draw (self.screen, x, y)
@@ -98,11 +90,6 @@ class Game:
             self.hazard_5.draw(self.screen, x, y)
     # draw_hazard()
 
-    # Define as posições dos objetos para criar o movimento
-    def move_background (self, obj_movL_x, obj_movL_y, obj_movR_x, obj_movR_y):
-        self.background.move (self.screen, obj_movL_x, obj_movL_y, obj_movR_x,obj_movR_y)
-    # move_background()
-
     # Informa a quantidade de hazard que passaram e a Pontuação
     def score_card(self, screen, h_passou, score):
         font = pygame.font.SysFont(None, 35)
@@ -120,7 +107,6 @@ class Game:
         h_passou = 0
 
         # variáveis para movimento de Plano de Fundo/Background
-        velocidade_background = 5
         velocidade_hazard = 7
 
         faixaA_x = 375
@@ -132,14 +118,6 @@ class Game:
         # Info Hazard
         h_width = 130 #55
         h_height = 130 #120
-
-        # movimento da margem esquerda
-        movL_x = 0
-        movL_y = 0
-
-        # movimento da margem direita
-        movR_x = 740
-        movR_y = 0
 
         # Criar o Plano de fundo
         self.background = Background()
@@ -178,28 +156,14 @@ class Game:
             # Handle Input Events
             self.handle_events()
 
-            # Atualiza Elementos
-            self.elements_update(dt)
-
-            # Desenha o background buffer
-            self.elements_draw()
-
             # adiciona movimento ao background
-
-            self.move_background (movL_x, movL_y, movR_x, movR_y)
-            movL_y = movL_y + velocidade_background
-            movR_y = movR_y + velocidade_background
-
-            #se a imagem ultrapassar a extremidade da tela, move de volta
-            if movL_y > 640 and movR_y > 640:
-                movL_y -= 640
-                movR_y -= 640
+            self.background.move(self.screen)
 
             # Altera a coordenada x do Player de acordo comas mudanças no event_handle() para ele se mover
             x = x + self.mudar_x
 
             # Mostrar Player
-            self.draw_player (x, y)
+            self.draw_player(x, y)
 
             # Mostrar score
             self.score_card(self.screen, h_passou, score)
@@ -239,7 +203,6 @@ class Game:
 
             # atualizando a tela
             pygame.display.update()
-            clock.tick(2000)
 
         # while self.run
     # loop()
