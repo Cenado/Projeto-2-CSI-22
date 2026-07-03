@@ -15,15 +15,11 @@ class Background:
         background_fig = pygame.transform.scale(background_fig, (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.background = background_fig
 
-        margin_left_fig = pygame.image.load("Images/margin_1.png")
-        margin_left_fig.convert()
-        margin_left_fig = pygame.transform.scale(margin_left_fig, (MARGIN_WIDTH, SCREEN_HEIGHT))
-        self.margin_left = margin_left_fig
-
-        margin_right_fig = pygame.image.load("Images/margin_2.png")
-        margin_right_fig.convert()
-        margin_right_fig = pygame.transform.scale(margin_right_fig, (MARGIN_WIDTH, SCREEN_HEIGHT))
-        self.margin_right = margin_right_fig
+        margin_fig = pygame.image.load("Images/margin.png")
+        margin_fig.convert()
+        margin = pygame.transform.scale(margin_fig, (MARGIN_WIDTH, SCREEN_HEIGHT))
+        self.margin_left = margin
+        self.margin_right = margin
 
         self.bgY1 = 0
         self.bgX1 = 0
