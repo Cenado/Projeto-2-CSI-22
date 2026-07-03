@@ -1,3 +1,9 @@
 # Cache folders
 .idea/
 __pycache__/
+
+# Virtual environment folder
+.env/
+
+# mise file
+mise.toml
