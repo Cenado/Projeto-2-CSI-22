@@ -1,5 +1,5 @@
 import pygame
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH
+from src.constants import SCREEN_HEIGHT, SCREEN_WIDTH
 
 class HUD:
     OPAQUE = 0
@@ -20,7 +20,7 @@ class HUD:
     def __init__(self):
         self.score = 0
 
-        self.font_warning = pygame.font.Font("Fonts/Fonte4.ttf", self.WARNING_FONT_SIZE)
+        self.font_warning = pygame.font.Font("src/Sprites/Fonts/Fonte4.ttf", self.WARNING_FONT_SIZE)
         self.render_lost_text = self.font_warning.render(self.LOST_TEXT, self.OPAQUE, self.LOST_COLOR)
         self.render_collided_text = self.font_warning.render(self.COLLIDED_TEXT, self.OPAQUE, self.COLLIDED_COLOR)
 

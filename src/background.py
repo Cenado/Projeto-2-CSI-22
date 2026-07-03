@@ -1,17 +1,17 @@
 import pygame
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH, MARGIN_WIDTH
+from src.constants import SCREEN_HEIGHT, SCREEN_WIDTH, MARGIN_WIDTH
 
 class Background:
     BACKGROUND_VELOCITY = 3.75
     MARGIN_LEFT_X = 740
 
     def __init__(self):
-        background_fig = pygame.image.load("Images/background.png")
+        background_fig = pygame.image.load("src/Sprites/Images/background.png")
         background_fig.convert()
         background_fig = pygame.transform.scale(background_fig, (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.background = background_fig
 
-        margin_fig = pygame.image.load("Images/margin.png")
+        margin_fig = pygame.image.load("src/Sprites/Images/margin.png")
         margin_fig.convert()
         margin = pygame.transform.scale(margin_fig, (MARGIN_WIDTH, SCREEN_HEIGHT))
         self.margin_left = margin

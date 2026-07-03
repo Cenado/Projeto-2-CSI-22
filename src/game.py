@@ -1,9 +1,9 @@
 import pygame
 import time
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH, TICK_RATE, SLEEP_TIME
-from hud import HUD
-from background import Background
-from entities import Player, Hazard
+from src.constants import SCREEN_HEIGHT, SCREEN_WIDTH, TICK_RATE, SLEEP_TIME
+from src.hud import HUD
+from src.background import Background
+from src.entities import Player, Hazard
 
 class Game:
     def __init__(self):

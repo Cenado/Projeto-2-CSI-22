@@ -1,6 +1,6 @@
 import pygame
 import random
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH, MARGIN_WIDTH
+from src.constants import SCREEN_HEIGHT, SCREEN_WIDTH, MARGIN_WIDTH
 from abc import ABC, abstractmethod
 
 class Entity(ABC):
@@ -24,7 +24,7 @@ class Player(Entity):
     RIGHT_BORDER = 758
 
     def __init__(self):
-        image = pygame.image.load("Images/player.png")
+        image = pygame.image.load("src/Sprites/Images/player.png")
         image.convert()
         image = pygame.transform.scale(image, (self.WIDTH, self.HEIGHT))
 
@@ -51,11 +51,11 @@ class Hazard(Entity):
 
     def __init__(self):
         self.images = [
-            "Images/nave.png",
-            "Images/satelite.png",
-            "Images/cometa.png",
-            "Images/planeta.png",
-            "Images/ameaca.png"]
+            "src/Sprites/Images/nave.png",
+            "src/Sprites/Images/satelite.png",
+            "src/Sprites/Images/cometa.png",
+            "src/Sprites/Images/planeta.png",
+            "src/Sprites/Images/ameaca.png"]
 
         image = self.load_image(self.images[0])
         x = random.randrange(MARGIN_WIDTH, SCREEN_WIDTH - MARGIN_WIDTH - self.WIDTH)
