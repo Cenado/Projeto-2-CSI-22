@@ -1,6 +1,7 @@
 import pygame
 import random
 import time
+from hud import HUD
 from background import Background
 from entities import Player, Hazard
 
@@ -13,8 +14,6 @@ class Game:
     background = None
     player = None
     hazard_1 = hazard_2 = hazard_3 = hazard_4 = hazard_5 = None
-    render_text_bateulateral = None
-    render_text_perdeu = None
 
     # movimento do Player
     DIREITA = pygame.K_RIGHT
@@ -37,12 +36,7 @@ class Game:
         pygame.mouse.set_visible(0)
         pygame.display.set_caption('Viagem Espacial')
 
-        # fontes
-        my_font = pygame.font.Font("Fonts/Fonte4.ttf", 100)
-
-        # Mensagens para o jogador
-        self.render_text_bateulateral = my_font.render("COLISÃO!", 0,(255, 255, 255))  # ("texto", opaco/transparente 0/1, cor do texto)
-        self.render_text_perdeu = my_font.render("GAME OVER!", 0, (255, 0, 0))  # ("texto, opaco/transparente 0/1, cor do texto)
+        self.hud = HUD()
 
     # init()
 
@@ -103,21 +97,10 @@ class Game:
         self.background.move (self.screen, obj_movL_x, obj_movL_y, obj_movR_x,obj_movR_y)
     # move_background()
 
-    # Informa a quantidade de hazard que passaram e a Pontuação
-    def score_card(self, screen, h_passou, score):
-        font = pygame.font.SysFont(None, 35)
-        passou = font.render("Passou: " + str(h_passou), True, (255, 255, 128))
-        score = font.render("Score: " + str(score), True, (253, 231, 32))
-        screen.blit(passou, (0, 50))
-        screen.blit(score, (0, 100))
-    #score_card()
-
     def loop(self):
         """
         Laço principal
         """
-        score = 0
-        h_passou = 0
 
         # variáveis para movimento de Plano de Fundo/Background
         velocidade_background = 5
@@ -202,12 +185,13 @@ class Game:
             self.draw_player (x, y)
 
             # Mostrar score
-            self.score_card(self.screen, h_passou, score)
+            self.hud.print_score(self.screen)
 
             # Restrições do movimento do Player
             # Se o Player bate na lateral não é Game Over
             if x > 760 - 92 or x < 40 + 5:
-                self.screen.blit(self.render_text_bateulateral, (80, 200))
+                self.hud.print_collided_text(self.screen)
+                self.hud.reset_score()
                 pygame.display.update()  # atualizar a tela
                 time.sleep(3)
                 self.loop()
@@ -225,14 +209,13 @@ class Game:
                 h_x = random.randrange(125, 650 - h_height)
                 hzrd = random.randint(0, 4)
                 # determinando quantos hazard passaram e a pontuação
-                h_passou = h_passou + 1
-                score = h_passou * 10
+                self.hud.increment_score()
 
             # restrições para o game over
             if y < h_y + h_height:
                 if x > h_x or x > h_x - 56:
                     if x < h_x + h_width or x < h_x - 56:
-                        self.screen.blit(self.render_text_perdeu, (80, 200))
+                        self.hud.print_lost_text(self.screen)
                         pygame.display.update()
                         time.sleep(3)
                         self.run = False
