@@ -63,19 +63,6 @@ class Game:
         return 0
     # get_player_direction()
 
-    def elements_update(self, dt):
-        self.background.update(dt)
-    # elements_update()
-
-    def elements_draw(self):
-        self.background.draw(self.screen)
-    # elements_draw()
-
-    # Define as posições dos objetos para criar o movimento
-    def move_background (self, obj_movL_x, obj_movL_y, obj_movR_x, obj_movR_y):
-        self.background.move (self.screen, obj_movL_x, obj_movL_y, obj_movR_x,obj_movR_y)
-    # move_background()
-
     def loop(self):
         """
         Laço principal
