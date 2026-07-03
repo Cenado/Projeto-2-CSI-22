@@ -181,7 +181,7 @@ class Game:
 
             # Restrições do movimento do Player
             # Se o Player bate na lateral não é Game Over
-            if self.player.x > 760 - 92 or self.player.x < 40 + 5:
+            if self.player.collided_with_border(45, 668):
                 self.screen.blit(self.render_text_bateulateral, (80, 200))
                 pygame.display.update()  # atualizar a tela
                 time.sleep(3)

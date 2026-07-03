@@ -21,6 +21,9 @@ class Player(Entity):
     def move(self, dx):
         self.x += dx
 
+    def collided_with_border(self, left_border, right_border):
+        return self.x < left_border or self.x > right_border
+
 class Hazard(Entity):
     def __init__(self, image_path, x, y):
         image = self.load_image(image_path)
