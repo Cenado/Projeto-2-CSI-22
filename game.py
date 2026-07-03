@@ -1,21 +1,11 @@
 import pygame
 import time
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH, TICK_RATE
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH, TICK_RATE, SLEEP_TIME
 from hud import HUD
 from background import Background
 from entities import Player, Hazard
 
 class Game:
-    screen = None
-    screen_size = None
-    run = True
-    background = None
-    player = None
-    hazard = None
-    render_text_bateulateral = None
-    render_text_perdeu = None
-    last_direction = 0
-
     def __init__(self):
 
         """
@@ -23,15 +13,21 @@ class Game:
         caption, e desabilita o mouse.
         """
 
+        self.run = True
+        self.clock = pygame.time.Clock()
+
         pygame.init()
 
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # tamanho da tela
-        self.screen_size = self.screen.get_size()
 
         pygame.mouse.set_visible(False)
         pygame.display.set_caption('Viagem Espacial')
 
+        self.background = Background()
         self.hud = HUD()
+        self.player = Player()
+        self.hazard = Hazard()
+        self.last_direction = 0
 
     # init()
 
@@ -62,25 +58,18 @@ class Game:
         return 0
     # get_player_direction()
 
+    def reset(self):
+        self.player.reset()
+        self.hazard.reset()
+
     def loop(self):
         """
         Laço principal
         """
 
-        # Criar o Plano de fundo
-        self.background = Background()
-
-        # Criar entidades
-        self.player = Player()
-        self.hazard = Hazard()
-
-        # Inicializamos o relogio e o dt que vai limitar o valor de FPS
-        # frames por segundo do jogo
-        clock = pygame.time.Clock()
-
         # assim iniciamos o loop principal do programa
         while self.run:
-            clock.tick(TICK_RATE)
+            self.clock.tick(TICK_RATE)
 
             # Handle Input Events
             self.handle_events()
@@ -103,9 +92,9 @@ class Game:
                 self.hud.print_collided_text(self.screen)
                 self.hud.reset_score()
                 pygame.display.update()  # atualizar a tela
-                time.sleep(3)
-                self.loop()
-                self.run = False
+                time.sleep(SLEEP_TIME)
+                self.reset()
+                continue
 
             # adicionando movimento ao hazard
             self.hazard.move()
@@ -122,7 +111,7 @@ class Game:
             if self.hazard.collided(self.player):
                 self.hud.print_lost_text(self.screen)
                 pygame.display.update()
-                time.sleep(3)
+                time.sleep(SLEEP_TIME)
                 self.run = False
 
             # atualizando a tela

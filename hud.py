@@ -1,4 +1,5 @@
 import pygame
+import time
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 
 class HUD:

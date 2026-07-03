@@ -1,7 +1,7 @@
 import pygame
 import random
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH, MARGIN_WIDTH
-from abc import ABC
+from abc import ABC, abstractmethod
 
 class Entity(ABC):
     def __init__(self, image, x, y):
@@ -10,6 +10,10 @@ class Entity(ABC):
 
     def draw(self, screen):
         screen.blit(self.image, self.hitbox)
+
+    @abstractmethod
+    def reset(self):
+        raise NotImplementedError
 
 class Player(Entity):
     WIDTH = 90
@@ -28,6 +32,10 @@ class Player(Entity):
         y = SCREEN_HEIGHT - self.DIST_TO_BOTTOM
 
         super().__init__(image, x, y)
+
+    def reset(self):
+        self.hitbox.x = (SCREEN_WIDTH - self.WIDTH) / 2
+        self.hitbox.y = SCREEN_HEIGHT - self.DIST_TO_BOTTOM
 
     def move(self, direction):
         self.hitbox.x += direction * self.SPEED
@@ -54,6 +62,10 @@ class Hazard(Entity):
         y = self.Y_SPAWN
 
         super().__init__(image, x, y)
+
+    def reset(self):
+        self.hitbox.x = random.randrange(MARGIN_WIDTH, SCREEN_WIDTH - MARGIN_WIDTH - self.WIDTH)
+        self.hitbox.y = self.Y_SPAWN
 
     def load_image(self, image_path):
         image = pygame.image.load(image_path)
