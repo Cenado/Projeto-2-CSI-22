@@ -14,6 +14,7 @@ class Player(Entity):
     WIDTH = 90
     HEIGHT = 90
     DIST_TO_BOTTOM = 125
+    SPEED = 3
 
     def __init__(self, screen_width, screen_height):
         image = pygame.image.load("Images/player.png")
@@ -25,8 +26,8 @@ class Player(Entity):
 
         super().__init__(image, x, y)
 
-    def move(self, dx):
-        self.hitbox.x += dx
+    def move(self, direction):
+        self.hitbox.x += direction * self.SPEED
 
     def collided_with_border(self, left_border, right_border):
         return self.hitbox.left < left_border or self.hitbox.right > right_border

@@ -15,12 +15,7 @@ class Game:
     hazard = None
     render_text_bateulateral = None
     render_text_perdeu = None
-
-    # movimento do Player
-    DIREITA = pygame.K_RIGHT
-    ESQUERDA = pygame.K_LEFT
-    mudar_x = 0.0
-
+    last_direction = 0
 
     def __init__(self, size, fullscreen):
 
@@ -46,29 +41,31 @@ class Game:
     # init()
 
     def handle_events(self):
-        """
-        Trata o evento e toma a ação necessária.
-        """
         for event in pygame.event.get():
-
             if event.type == pygame.QUIT:
                 self.run = False
 
-            # se clicar em qualquer tecla, entra no if
             if event.type == pygame.KEYDOWN:
-                # se clicar na seta da esquerda, anda 3 para a esquerda no eixo x
-                if event.key == self.ESQUERDA:
-                    self.mudar_x = -3
-                # se clicar na seta da direita, anda 3 para a direita no eixo x
-                if event.key == self.DIREITA:
-                    self.mudar_x = 3
+                if event.key == pygame.K_LEFT:
+                    self.last_direction = -1
 
-            # se soltar qualquer tecla, não faz nada
-            if event.type == pygame.KEYUP:
-                if event.key == self.ESQUERDA or event.key == self.DIREITA:
-                    self.mudar_x = 0
-
+                if event.key == pygame.K_RIGHT:
+                    self.last_direction = 1
     # handle_events()
+
+    def get_player_direction(self):
+        keys = pygame.key.get_pressed()
+        left = keys[pygame.K_LEFT]
+        right = keys[pygame.K_RIGHT]
+
+        if left and right:
+            return self.last_direction
+        if left:
+            return -1
+        if right:
+            return 1
+        return 0
+    # get_player_direction()
 
     def elements_update(self, dt):
         self.background.update(dt)
@@ -150,7 +147,8 @@ class Game:
                 movR_y -= 640
 
             # Altera a coordenada x do Player de acordo comas mudanças no event_handle() para ele se mover
-            self.player.move(self.mudar_x)
+            direction = self.get_player_direction()
+            self.player.move(direction)
 
             # Mostrar Player
             self.player.draw(self.screen)
