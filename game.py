@@ -9,8 +9,7 @@ class Game:
     def __init__(self):
 
         """
-        Função que inicializa o pygame, define a resolução da tela,
-        caption, e desabilita o mouse.
+        Função que inicializa o pygame, define a resolução da tela e desabilita o mouse
         """
 
         self.run = True
@@ -18,7 +17,7 @@ class Game:
 
         pygame.init()
 
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # tamanho da tela
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
         pygame.mouse.set_visible(False)
         pygame.display.set_caption('Viagem Espacial')
@@ -28,8 +27,6 @@ class Game:
         self.player = Player()
         self.hazard = Hazard()
         self.last_direction = 0
-
-    # init()
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -42,7 +39,6 @@ class Game:
 
                 if event.key == pygame.K_RIGHT:
                     self.last_direction = 1
-    # handle_events()
 
     def get_player_direction(self):
         keys = pygame.key.get_pressed()
@@ -56,7 +52,6 @@ class Game:
         if right:
             return 1
         return 0
-    # get_player_direction()
 
     def reset(self):
         self.player.reset()
@@ -67,55 +62,44 @@ class Game:
         Laço principal
         """
 
-        # assim iniciamos o loop principal do programa
         while self.run:
             self.clock.tick(TICK_RATE)
-
-            # Handle Input Events
             self.handle_events()
 
-            # adiciona movimento ao background
+            # move o plano de fundo
             self.background.move(self.screen)
 
-            # Altera a coordenada x do Player de acordo comas mudanças no event_handle() para ele se mover
+            # move e exibe o jogador de acordo com a direção selecionada
             direction = self.get_player_direction()
             self.player.move(direction)
-
-            # Mostrar Player
             self.player.draw(self.screen)
 
-            # Mostrar score
+            # exibe a pontuação
             self.hud.print_score(self.screen)
 
-            # Restrições do movimento do Player
+            # teste de colisão com a borda
             if self.player.collided_with_border():
                 self.hud.print_collided_text(self.screen)
                 self.hud.reset_score()
-                pygame.display.update()  # atualizar a tela
+                pygame.display.update()
                 time.sleep(SLEEP_TIME)
                 self.reset()
                 continue
 
-            # adicionando movimento ao hazard
+            # move e exibe o hazard
             self.hazard.move()
             self.hazard.draw(self.screen)
 
-            # definindo onde hazard vai aparecer, recomeçando a posição do obstaculo
+            # teste de ultrapassagem do hazard
             if self.hazard.exited_screen():
                 self.hazard.respawn()
-                
-                # determinando quantos hazard passaram e a pontuação
                 self.hud.increment_score()
 
-            # restrições para o game over
+            # teste de colisão entre player e hazard (game over)
             if self.hazard.collided(self.player):
                 self.hud.print_lost_text(self.screen)
                 pygame.display.update()
                 time.sleep(SLEEP_TIME)
                 self.run = False
 
-            # atualizando a tela
             pygame.display.update()
-
-        # while self.run
-    # loop()

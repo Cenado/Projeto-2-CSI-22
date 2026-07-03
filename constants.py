@@ -1,10 +1,10 @@
-# Screen constants
+# constantes da tela
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-# Game constants
+# constantes do jogo
 TICK_RATE = 60
 SLEEP_TIME = 3
 
-# Background constants
+# constantes do plano de fundo
 MARGIN_WIDTH = 60

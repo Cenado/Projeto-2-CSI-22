@@ -1,5 +1,4 @@
 import pygame
-import time
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 
 class HUD:
@@ -50,4 +49,3 @@ class HUD:
 
     def print_score(self, screen):
         screen.blit(self.render_score_text, self.SCORE_POSITION)
-    
