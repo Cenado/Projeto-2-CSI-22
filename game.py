@@ -101,7 +101,7 @@ class Game:
 
         # variáveis para movimento de Plano de Fundo/Background
         velocidade_background = 5
-        velocidade_hazard = 7
+        velocidade_hazard = 8.75
 
         h_x = random.randrange(125, 660)
         h_y = -500
@@ -171,7 +171,7 @@ class Game:
 
             # Restrições do movimento do Player
             # Se o Player bate na lateral não é Game Over
-            if self.player.collided_with_border(45, 668):
+            if self.player.collided_with_border(45, 758):
                 self.screen.blit(self.render_text_bateulateral, (80, 200))
                 pygame.display.update()  # atualizar a tela
                 time.sleep(3)
@@ -179,9 +179,8 @@ class Game:
                 self.run = False
 
             # adicionando movimento ao hazard
-            self.hazard.move(velocidade_hazard / 4)
-            self.hazard.draw(self.screen)
             self.hazard.move(velocidade_hazard)
+            self.hazard.draw(self.screen)
 
             # definindo onde hazard vai aparecer, recomeçando a posição do obstaculo
             if self.hazard.exited_screen(self.height):

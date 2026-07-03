@@ -5,11 +5,10 @@ from abc import ABC
 class Entity(ABC):
     def __init__(self, image, x, y):
         self.image = image
-        self.x = x
-        self.y = y
+        self.hitbox = image.get_rect(topleft=(x, y))
 
     def draw(self, screen):
-        screen.blit(self.image, (self.x, self.y))
+        screen.blit(self.image, self.hitbox)
 
 class Player(Entity):
     WIDTH = 90
@@ -23,10 +22,10 @@ class Player(Entity):
         super().__init__(image, x, y)
 
     def move(self, dx):
-        self.x += dx
+        self.hitbox.x += dx
 
     def collided_with_border(self, left_border, right_border):
-        return self.x < left_border or self.x > right_border
+        return self.hitbox.left < left_border or self.hitbox.right > right_border
 
 class Hazard(Entity):
     WIDTH = 130
@@ -50,17 +49,14 @@ class Hazard(Entity):
 
     def respawn(self, left_limit, right_limit):
         self.image = self.load_image(random.choice(self.images))
-        self.x = random.randrange(left_limit, right_limit)
-        self.y = -self.HEIGHT
+        self.hitbox.x = random.randrange(left_limit, right_limit)
+        self.hitbox.y = -self.hitbox.height
 
     def move(self, dy):
-        self.y += dy
+        self.hitbox.y += dy
 
     def exited_screen(self, screen_height):
-        return self.y > screen_height
+        return self.hitbox.y > screen_height
     
     def collided(self, player):
-        return (
-            player.y < self.y + self.HEIGHT and
-            player.x > self.x - 56 and
-            player.x < self.x + self.WIDTH)
+        return self.hitbox.colliderect(player.hitbox)
