@@ -1,5 +1,6 @@
 import pygame
 import time
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH, TICK_RATE
 from hud import HUD
 from background import Background
 from entities import Player, Hazard
@@ -7,8 +8,6 @@ from entities import Player, Hazard
 class Game:
     screen = None
     screen_size = None
-    width = 800
-    height = 600
     run = True
     background = None
     player = None
@@ -26,10 +25,10 @@ class Game:
 
         pygame.init()
 
-        self.screen = pygame.display.set_mode((self.width, self.height))  # tamanho da tela
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # tamanho da tela
         self.screen_size = self.screen.get_size()
 
-        pygame.mouse.set_visible(0)
+        pygame.mouse.set_visible(False)
         pygame.display.set_caption('Viagem Espacial')
 
         self.hud = HUD()
@@ -68,15 +67,12 @@ class Game:
         Laço principal
         """
 
-        # comprimento da margem
-        margin_width = 60
-
         # Criar o Plano de fundo
         self.background = Background()
 
         # Criar entidades
-        self.player = Player(self.width, self.height)
-        self.hazard = Hazard(self.width, margin_width)
+        self.player = Player()
+        self.hazard = Hazard()
 
         # Inicializamos o relogio e o dt que vai limitar o valor de FPS
         # frames por segundo do jogo
@@ -84,7 +80,7 @@ class Game:
 
         # assim iniciamos o loop principal do programa
         while self.run:
-            clock.tick(60)
+            clock.tick(TICK_RATE)
 
             # Handle Input Events
             self.handle_events()
@@ -103,7 +99,7 @@ class Game:
             self.hud.print_score(self.screen)
 
             # Restrições do movimento do Player
-            if self.player.collided_with_border(45, 758):
+            if self.player.collided_with_border():
                 self.hud.print_collided_text(self.screen)
                 self.hud.reset_score()
                 pygame.display.update()  # atualizar a tela
@@ -116,8 +112,8 @@ class Game:
             self.hazard.draw(self.screen)
 
             # definindo onde hazard vai aparecer, recomeçando a posição do obstaculo
-            if self.hazard.exited_screen(self.height):
-                self.hazard.respawn(self.width, margin_width)
+            if self.hazard.exited_screen():
+                self.hazard.respawn()
                 
                 # determinando quantos hazard passaram e a pontuação
                 self.hud.increment_score()

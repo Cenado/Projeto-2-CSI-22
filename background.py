@@ -1,44 +1,44 @@
 import pygame
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH, MARGIN_WIDTH
 
 class Background:
     """
     Esta classe define o Plano de Fundo do jogo
     """
+    BACKGROUND_VELOCITY = 3.75
+    MARGIN_LEFT_X = 740
+
     def __init__(self):
 
         background_fig = pygame.image.load("Images/background.png")
         background_fig.convert()
-        background_fig = pygame.transform.scale(background_fig, (800, 600))
+        background_fig = pygame.transform.scale(background_fig, (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.background = background_fig
-        self.height = self.background.get_height()
 
         margin_left_fig = pygame.image.load("Images/margin_1.png")
         margin_left_fig.convert()
-        margin_left_fig = pygame.transform.scale(margin_left_fig, (60, 600))
+        margin_left_fig = pygame.transform.scale(margin_left_fig, (MARGIN_WIDTH, SCREEN_HEIGHT))
         self.margin_left = margin_left_fig
 
         margin_right_fig = pygame.image.load("Images/margin_2.png")
         margin_right_fig.convert()
-        margin_right_fig = pygame.transform.scale(margin_right_fig, (60, 600))
+        margin_right_fig = pygame.transform.scale(margin_right_fig, (MARGIN_WIDTH, SCREEN_HEIGHT))
         self.margin_right = margin_right_fig
 
-        self.background_speed = 3.75
         self.bgY1 = 0
         self.bgX1 = 0
 
-        self.bgY2 = self.height
+        self.bgY2 = SCREEN_HEIGHT
         self.bgX2 = 0
-
-        self.margin_left_x = 740
     # __init__()
 
     def _update(self):
-        self.bgY1 += self.background_speed
-        self.bgY2 += self.background_speed
-        if self.bgY1 >= self.height:
-            self.bgY1 = -self.height
-        if self.bgY2 >= self.height:
-            self.bgY2 = -self.height
+        self.bgY1 += self.BACKGROUND_VELOCITY
+        self.bgY2 += self.BACKGROUND_VELOCITY
+        if self.bgY1 >= SCREEN_HEIGHT:
+            self.bgY1 = -SCREEN_HEIGHT
+        if self.bgY2 >= SCREEN_HEIGHT:
+            self.bgY2 = -SCREEN_HEIGHT
     # update()
 
     def move(self, screen):
@@ -50,6 +50,6 @@ class Background:
         screen.blit(self.margin_left, (self.bgX1, self.bgY1))
         screen.blit(self.margin_left, (self.bgX2, self.bgY2))
 
-        screen.blit(self.margin_right, (self.margin_left_x, self.bgY1))
-        screen.blit(self.margin_right, (self.margin_left_x, self.bgY2))
+        screen.blit(self.margin_right, (self.MARGIN_LEFT_X, self.bgY1))
+        screen.blit(self.margin_right, (self.MARGIN_LEFT_X, self.bgY2))
     # move()

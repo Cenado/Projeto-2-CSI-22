@@ -1,5 +1,6 @@
 import pygame
 import random
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH, MARGIN_WIDTH
 from abc import ABC
 
 class Entity(ABC):
@@ -15,22 +16,24 @@ class Player(Entity):
     HEIGHT = 90
     DIST_TO_BOTTOM = 125
     SPEED = 2.25
+    LEFT_BORDER = 45
+    RIGHT_BORDER = 758
 
-    def __init__(self, screen_width, screen_height):
+    def __init__(self):
         image = pygame.image.load("Images/player.png")
         image.convert()
         image = pygame.transform.scale(image, (self.WIDTH, self.HEIGHT))
 
-        x = (screen_width - self.WIDTH) / 2
-        y = screen_height - self.DIST_TO_BOTTOM
+        x = (SCREEN_WIDTH - self.WIDTH) / 2
+        y = SCREEN_HEIGHT - self.DIST_TO_BOTTOM
 
         super().__init__(image, x, y)
 
     def move(self, direction):
         self.hitbox.x += direction * self.SPEED
 
-    def collided_with_border(self, left_border, right_border):
-        return self.hitbox.left < left_border or self.hitbox.right > right_border
+    def collided_with_border(self):
+        return self.hitbox.left < self.LEFT_BORDER or self.hitbox.right > self.RIGHT_BORDER
 
 class Hazard(Entity):
     WIDTH = 130
@@ -38,7 +41,7 @@ class Hazard(Entity):
     Y_SPAWN = -500
     SPEED = 6.56
 
-    def __init__(self, screen_width, margin_width):
+    def __init__(self):
         self.images = [
             "Images/nave.png",
             "Images/satelite.png",
@@ -47,7 +50,7 @@ class Hazard(Entity):
             "Images/ameaca.png"]
 
         image = self.load_image(self.images[0])
-        x = random.randrange(margin_width, screen_width - margin_width - self.WIDTH)
+        x = random.randrange(MARGIN_WIDTH, SCREEN_WIDTH - MARGIN_WIDTH - self.WIDTH)
         y = self.Y_SPAWN
 
         super().__init__(image, x, y)
@@ -57,16 +60,16 @@ class Hazard(Entity):
         image.convert()
         return pygame.transform.scale(image, (self.WIDTH, self.HEIGHT))
 
-    def respawn(self, screen_width, margin_width):
+    def respawn(self):
         self.image = self.load_image(random.choice(self.images))
-        self.hitbox.x = random.randrange(margin_width, screen_width - margin_width - self.WIDTH)
+        self.hitbox.x = random.randrange(MARGIN_WIDTH, SCREEN_WIDTH - MARGIN_WIDTH - self.WIDTH)
         self.hitbox.y = -self.hitbox.height
 
     def move(self):
         self.hitbox.y += self.SPEED
 
-    def exited_screen(self, screen_height):
-        return self.hitbox.y > screen_height
+    def exited_screen(self):
+        return self.hitbox.y > SCREEN_HEIGHT
     
     def collided(self, player):
         return self.hitbox.colliderect(player.hitbox)
