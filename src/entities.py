@@ -14,6 +14,10 @@ class Entity(ABC):
     @abstractmethod
     def reset(self):
         raise NotImplementedError
+    
+    @abstractmethod
+    def move(self):
+        raise NotImplementedError
 
 class Player(Entity):
     WIDTH = 90
