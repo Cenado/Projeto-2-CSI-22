@@ -5,11 +5,11 @@ from abc import ABC, abstractmethod
 
 class Entity(ABC):
     def __init__(self, image, x, y):
-        self.image = image
-        self.hitbox = image.get_rect(topleft=(x, y))
+        self._image = image
+        self._hitbox = image.get_rect(topleft=(x, y))
 
     def draw(self, screen):
-        screen.blit(self.image, self.hitbox)
+        screen.blit(self._image, self._hitbox)
 
     @abstractmethod
     def reset(self):
@@ -34,14 +34,14 @@ class Player(Entity):
         super().__init__(image, x, y)
 
     def reset(self):
-        self.hitbox.x = (SCREEN_WIDTH - self.WIDTH) / 2
-        self.hitbox.y = SCREEN_HEIGHT - self.DIST_TO_BOTTOM
+        self._hitbox.x = (SCREEN_WIDTH - self.WIDTH) / 2
+        self._hitbox.y = SCREEN_HEIGHT - self.DIST_TO_BOTTOM
 
     def move(self, direction):
-        self.hitbox.x += direction * self.SPEED
+        self._hitbox.x += direction * self.SPEED
 
     def collided_with_border(self):
-        return self.hitbox.left < self.LEFT_BORDER or self.hitbox.right > self.RIGHT_BORDER
+        return self._hitbox.left < self.LEFT_BORDER or self._hitbox.right > self.RIGHT_BORDER
 
 class Hazard(Entity):
     WIDTH = 130
@@ -50,38 +50,38 @@ class Hazard(Entity):
     SPEED = 6.56
 
     def __init__(self):
-        self.images = [
+        self._images = [
             "src/Sprites/Images/nave.png",
             "src/Sprites/Images/satelite.png",
             "src/Sprites/Images/cometa.png",
             "src/Sprites/Images/planeta.png",
             "src/Sprites/Images/ameaca.png"]
 
-        image = self.load_image(self.images[0])
+        image = self._load_image(self._images[0])
         x = random.randrange(MARGIN_WIDTH, SCREEN_WIDTH - MARGIN_WIDTH - self.WIDTH)
         y = self.Y_SPAWN
 
         super().__init__(image, x, y)
 
     def reset(self):
-        self.hitbox.x = random.randrange(MARGIN_WIDTH, SCREEN_WIDTH - MARGIN_WIDTH - self.WIDTH)
-        self.hitbox.y = self.Y_SPAWN
+        self._hitbox.x = random.randrange(MARGIN_WIDTH, SCREEN_WIDTH - MARGIN_WIDTH - self.WIDTH)
+        self._hitbox.y = self.Y_SPAWN
 
-    def load_image(self, image_path):
+    def _load_image(self, image_path):
         image = pygame.image.load(image_path)
         image.convert()
         return pygame.transform.scale(image, (self.WIDTH, self.HEIGHT))
 
     def respawn(self):
-        self.image = self.load_image(random.choice(self.images))
-        self.hitbox.x = random.randrange(MARGIN_WIDTH, SCREEN_WIDTH - MARGIN_WIDTH - self.WIDTH)
-        self.hitbox.y = -self.hitbox.height
+        self._image = self._load_image(random.choice(self._images))
+        self._hitbox.x = random.randrange(MARGIN_WIDTH, SCREEN_WIDTH - MARGIN_WIDTH - self.WIDTH)
+        self._hitbox.y = -self._hitbox.height
 
     def move(self):
-        self.hitbox.y += self.SPEED
+        self._hitbox.y += self.SPEED
 
     def exited_screen(self):
-        return self.hitbox.y > SCREEN_HEIGHT
+        return self._hitbox.y > SCREEN_HEIGHT
     
     def collided(self, player):
-        return self.hitbox.colliderect(player.hitbox)
+        return self._hitbox.colliderect(player._hitbox)

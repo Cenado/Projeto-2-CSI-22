@@ -9,36 +9,36 @@ class Background:
         background_fig = pygame.image.load("src/Sprites/Images/background.png")
         background_fig.convert()
         background_fig = pygame.transform.scale(background_fig, (SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.background = background_fig
+        self._background = background_fig
 
         margin_fig = pygame.image.load("src/Sprites/Images/margin.png")
         margin_fig.convert()
-        margin = pygame.transform.scale(margin_fig, (MARGIN_WIDTH, SCREEN_HEIGHT))
-        self.margin_left = margin
-        self.margin_right = margin
+        margin_fig = pygame.transform.scale(margin_fig, (MARGIN_WIDTH, SCREEN_HEIGHT))
+        self._margin_left = margin_fig
+        self._margin_right = margin_fig
 
-        self.bgY1 = 0
-        self.bgX1 = 0
+        self._bgY1 = 0
+        self._bgX1 = 0
 
-        self.bgY2 = SCREEN_HEIGHT
-        self.bgX2 = 0
+        self._bgY2 = SCREEN_HEIGHT
+        self._bgX2 = 0
 
     def _update(self):
-        self.bgY1 += self.BACKGROUND_VELOCITY
-        self.bgY2 += self.BACKGROUND_VELOCITY
-        if self.bgY1 >= SCREEN_HEIGHT:
-            self.bgY1 = -SCREEN_HEIGHT
-        if self.bgY2 >= SCREEN_HEIGHT:
-            self.bgY2 = -SCREEN_HEIGHT
+        self._bgY1 += self.BACKGROUND_VELOCITY
+        self._bgY2 += self.BACKGROUND_VELOCITY
+        if self._bgY1 >= SCREEN_HEIGHT:
+            self._bgY1 = -SCREEN_HEIGHT
+        if self._bgY2 >= SCREEN_HEIGHT:
+            self._bgY2 = -SCREEN_HEIGHT
 
     def move(self, screen):
         self._update()
 
-        screen.blit(self.background, (self.bgX1, self.bgY1))
-        screen.blit(self.background, (self.bgX2, self.bgY2))
+        screen.blit(self._background, (self._bgX1, self._bgY1))
+        screen.blit(self._background, (self._bgX2, self._bgY2))
 
-        screen.blit(self.margin_left, (self.bgX1, self.bgY1))
-        screen.blit(self.margin_left, (self.bgX2, self.bgY2))
+        screen.blit(self._margin_left, (self._bgX1, self._bgY1))
+        screen.blit(self._margin_left, (self._bgX2, self._bgY2))
 
-        screen.blit(self.margin_right, (self.MARGIN_LEFT_X, self.bgY1))
-        screen.blit(self.margin_right, (self.MARGIN_LEFT_X, self.bgY2))
+        screen.blit(self._margin_right, (self.MARGIN_LEFT_X, self._bgY1))
+        screen.blit(self._margin_right, (self.MARGIN_LEFT_X, self._bgY2))

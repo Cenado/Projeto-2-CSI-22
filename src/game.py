@@ -12,21 +12,21 @@ class Game:
         Função que inicializa o pygame, define a resolução da tela e desabilita o mouse
         """
 
-        self.run = True
-        self.clock = pygame.time.Clock()
+        self._run = True
+        self._clock = pygame.time.Clock()
 
         pygame.init()
 
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self._screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
         pygame.mouse.set_visible(False)
         pygame.display.set_caption('Viagem Espacial')
 
-        self.background = Background()
-        self.hud = HUD()
-        self.player = Player()
-        self.hazard = Hazard()
-        self.last_direction = 0
+        self._background = Background()
+        self._hud = HUD()
+        self._player = Player()
+        self._hazard = Hazard()
+        self._last_direction = 0
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -35,10 +35,10 @@ class Game:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    self.last_direction = -1
+                    self._last_direction = -1
 
                 if event.key == pygame.K_RIGHT:
-                    self.last_direction = 1
+                    self._last_direction = 1
 
     def get_player_direction(self):
         keys = pygame.key.get_pressed()
@@ -46,7 +46,7 @@ class Game:
         right = keys[pygame.K_RIGHT]
 
         if left and right:
-            return self.last_direction
+            return self._last_direction
         if left:
             return -1
         if right:
@@ -54,52 +54,52 @@ class Game:
         return 0
 
     def reset(self):
-        self.player.reset()
-        self.hazard.reset()
+        self._player.reset()
+        self._hazard.reset()
 
     def loop(self):
         """
         Laço principal
         """
 
-        while self.run:
-            self.clock.tick(TICK_RATE)
+        while self._run:
+            self._clock.tick(TICK_RATE)
             self.handle_events()
 
             # move o plano de fundo
-            self.background.move(self.screen)
+            self._background.move(self._screen)
 
             # move e exibe o jogador de acordo com a direção selecionada
             direction = self.get_player_direction()
-            self.player.move(direction)
-            self.player.draw(self.screen)
+            self._player.move(direction)
+            self._player.draw(self._screen)
 
             # exibe a pontuação
-            self.hud.print_score(self.screen)
+            self._hud.print_score(self._screen)
 
             # teste de colisão com a borda
-            if self.player.collided_with_border():
-                self.hud.print_collided_text(self.screen)
-                self.hud.reset_score()
+            if self._player.collided_with_border():
+                self._hud.print_collided_text(self._screen)
+                self._hud.reset_score()
                 pygame.display.update()
                 time.sleep(SLEEP_TIME)
                 self.reset()
                 continue
 
             # move e exibe o hazard
-            self.hazard.move()
-            self.hazard.draw(self.screen)
+            self._hazard.move()
+            self._hazard.draw(self._screen)
 
             # teste de ultrapassagem do hazard
-            if self.hazard.exited_screen():
-                self.hazard.respawn()
-                self.hud.increment_score()
+            if self._hazard.exited_screen():
+                self._hazard.respawn()
+                self._hud.increment_score()
 
             # teste de colisão entre player e hazard (game over)
-            if self.hazard.collided(self.player):
-                self.hud.print_lost_text(self.screen)
+            if self._hazard.collided(self._player):
+                self._hud.print_lost_text(self._screen)
                 pygame.display.update()
                 time.sleep(SLEEP_TIME)
-                self.run = False
+                self._run = False
 
             pygame.display.update()
